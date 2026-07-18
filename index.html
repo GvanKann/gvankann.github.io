@@ -3,6 +3,7 @@
 <html>
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>GvanKann</title>
 
@@ -17,6 +18,7 @@ body {
     height: 100%;
     background: #181818; /* elegant, aesthetic black */
     color: #f8f8f2;      /* optional: makes text readable on black bg */
+    box-sizing: border-box;
 }
 
 body {
@@ -30,10 +32,24 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
+    padding: 20px;
+}
+
+#main > div {
+    width: 100%;
+    max-width: 600px;
+}
+
+#main img {
+    width: 100%;
+    height: auto;
+    max-width: 560px;
 }
 
 #timezone {
     font-size: 18px;
+    display: block;
+    margin: 20px 0;
 }
 
 #contact {
@@ -46,8 +62,91 @@ body {
     line-height: 1.35;
 }
 
-#contact .address {
-    margin-top: 8px;
+a.link-bright {
+    color: #06c6ff; /* bright cyan, readable on black */
+    text-decoration: none;
+    display: inline-block;
+    margin: 8px 4px;
+    white-space: nowrap;
+}
+
+a.link-bright:hover, a.link-bright:focus {
+    color: #ffe454; /* yellow highlight on hover */
+    text-decoration: underline;
+}
+
+.link-separator {
+    display: inline-block;
+    margin: 0 4px;
+    color: #f8f8f2;
+}
+
+@media (max-width: 640px) {
+    #main {
+        padding: 15px;
+    }
+
+    #main > div {
+        max-width: 100%;
+    }
+
+    #timezone {
+        font-size: 16px;
+    }
+
+    a.link-bright {
+        font-size: 14px;
+        margin: 6px 3px;
+    }
+
+    .link-separator {
+        margin: 0 3px;
+    }
+
+    #contact {
+        font-size: 12px;
+        right: 12px;
+        bottom: 10px;
+        text-align: center;
+        left: 12px;
+    }
+
+    #contact .address {
+        margin-top: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    #main {
+        padding: 10px;
+    }
+
+    #timezone {
+        font-size: 14px;
+    }
+
+    a.link-bright {
+        font-size: 13px;
+        margin: 5px 2px;
+    }
+
+    .link-separator {
+        display: none;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    #contact {
+        position: static;
+        margin-top: 30px;
+        padding: 15px;
+        text-align: center;
+    }
 }
 </style>
 
@@ -90,31 +189,28 @@ window.onload = () => {
 
         <br><br>
 
-        <img src="assets/banner.png" style="width:560px;" alt="u of u">
+        <img src="assets/banner.png" alt="u of u">
 
         <br><br>
 
         <span id="timezone">
         </span>
 
-        
-        <style>
-            a.link-bright {
-                color: #06c6ff; /* bright cyan, readable on black */
-                text-decoration: none;
-            }
-            a.link-bright:hover, a.link-bright:focus {
-                color: #ffe454; /* yellow highlight on hover */
-                text-decoration: underline;
-            }
-        </style>
-        <a href="https://github.com/GvanKann" class="link-bright">Github</a> //
-        <a href="https://x.com/GvannKann" class="link-bright">X</a> //
-        <a href="https://substack.com/@gvankann" class="link-bright">Substack</a> //
-        <a href="https://letterboxd.com/GvannKann/" class="link-bright">letterboxd</a> //
-        <a href="https://backloggd.com/u/GvanKann/" class="link-bright">backloggd</a> //
-        <a href="https://www.goodreads.com/user/show/195089423-gvan" class="link-bright">goodreads</a> //
-        <a href="https://myanimelist.net/profile/GvannnKann" class="link-bright">MAL</a>
+        <div class="nav-links">
+            <a href="https://github.com/GvanKann" class="link-bright">Github</a>
+            <span class="link-separator">//</span>
+            <a href="https://x.com/GvannKann" class="link-bright">X</a>
+            <span class="link-separator">//</span>
+            <a href="https://substack.com/@gvankann" class="link-bright">Substack</a>
+            <span class="link-separator">//</span>
+            <a href="https://letterboxd.com/GvannKann/" class="link-bright">letterboxd</a>
+            <span class="link-separator">//</span>
+            <a href="https://backloggd.com/u/GvanKann/" class="link-bright">backloggd</a>
+            <span class="link-separator">//</span>
+            <a href="https://www.goodreads.com/user/show/195089423-gvan" class="link-bright">goodreads</a>
+            <span class="link-separator">//</span>
+            <a href="https://myanimelist.net/profile/GvannnKann" class="link-bright">MAL</a>
+        </div>
 
     </div>
 </div>
