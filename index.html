@@ -37,7 +37,6 @@ body {
 
 #main > div {
     width: 100%;
-    max-width: 600px;
 }
 
 #main img {
@@ -62,12 +61,16 @@ body {
     line-height: 1.35;
 }
 
+.nav-links {
+    white-space: nowrap;
+    overflow-x: auto;
+    display: inline-block;
+}
+
 a.link-bright {
     color: #06c6ff; /* bright cyan, readable on black */
     text-decoration: none;
-    display: inline-block;
-    margin: 8px 4px;
-    white-space: nowrap;
+    display: inline;
 }
 
 a.link-bright:hover, a.link-bright:focus {
@@ -76,8 +79,8 @@ a.link-bright:hover, a.link-bright:focus {
 }
 
 .link-separator {
-    display: inline-block;
-    margin: 0 4px;
+    display: inline;
+    margin: 0 8px;
     color: #f8f8f2;
 }
 
@@ -86,21 +89,16 @@ a.link-bright:hover, a.link-bright:focus {
         padding: 15px;
     }
 
-    #main > div {
-        max-width: 100%;
-    }
-
     #timezone {
         font-size: 16px;
     }
 
     a.link-bright {
         font-size: 14px;
-        margin: 6px 3px;
     }
 
     .link-separator {
-        margin: 0 3px;
+        margin: 0 6px;
     }
 
     #contact {
@@ -127,18 +125,10 @@ a.link-bright:hover, a.link-bright:focus {
 
     a.link-bright {
         font-size: 13px;
-        margin: 5px 2px;
     }
 
     .link-separator {
-        display: none;
-    }
-
-    .nav-links {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 8px;
+        margin: 0 4px;
     }
 
     #contact {
