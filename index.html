@@ -123,18 +123,6 @@ body {
     margin: 0 auto 20px;
 }
 
-/* ASCII Art Container */
-.ascii-art {
-    font-family: monospace;
-    font-size: 10px;
-    line-height: 1.1;
-    white-space: pre;
-    color: var(--text-color);
-    margin: 20px 0;
-    overflow-x: auto;
-    text-align: center;
-    opacity: 0.8;
-}
 
 /* About Section */
 .about-section {
@@ -144,11 +132,29 @@ body {
     opacity: 0.9;
 }
 
-.about-section .tagline {
-    font-weight: bold;
+/* Typing Animation */
+.typing-container {
+    display: inline-block;
+    text-align: left;
 }
 
-/* Typing Animation */
+.typing-text::after {
+    content: '▋';
+    color: var(--cursor-color);
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+    font-size: 16px;
+    margin: 20px 0;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
 .typing-container {
     display: inline-block;
     text-align: left;
@@ -403,9 +409,6 @@ body {
         font-size: 12px;
     }
 
-    .command-hint {
-        display: none;
-    }
 }
 
 @media (max-width: 480px) {
@@ -446,9 +449,6 @@ body {
 
     .typing-text::after {
         content: '';
-    }
-}
-</style>
 
 <script>
 (function() {
@@ -533,6 +533,15 @@ body {
         { name: 'email', url: 'mailto:jkanniganti@gmail.com', category: 'Contact' }
     ];
 
+    // Fun Geeks/Gimmicks Data
+    const easterEggs = {
+        konami: ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'],
+        matrix: false,
+        discoMode: false
+    };
+    
+    let konamiIndex = 0;
+
     function openCommandPalette() {
         const overlay = document.getElementById('command-palette-overlay');
         const input = document.getElementById('command-input');
@@ -541,8 +550,9 @@ body {
         
         overlay.classList.add('active');
         input.value = '';
-        input.focus();
         renderCommands(commands);
+        // Focus after a tiny delay to ensure the overlay is visible
+        setTimeout(() => input.focus(), 10);
     }
 
     function closeCommandPalette() {
@@ -620,6 +630,17 @@ body {
                 const filtered = filterCommands(query);
                 renderCommands(filtered);
             });
+            
+            commandInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const firstItem = document.querySelector('.command-item.selected') || 
+                                     document.querySelector('.command-item');
+                    if (firstItem) {
+                        firstItem.click();
+                    }
+                }
+            });
         }
 
         // Close command palette on overlay click
@@ -630,6 +651,44 @@ body {
                     closeCommandPalette();
                 }
             });
+        }
+        
+        // Konami Code Easter Egg
+        document.addEventListener('keydown', (e) => {
+            if (e.key === easterEggs.konami[konamiIndex]) {
+                konamiIndex++;
+                if (konamiIndex === easterEggs.konami.length) {
+                    activateDiscoMode();
+                    konamiIndex = 0;
+                }
+            } else {
+                konamiIndex = 0;
+            }
+        });
+        
+        function activateDiscoMode() {
+            const body = document.body;
+            easterEggs.discoMode = !easterEggs.discoMode;
+            
+            if (easterEggs.discoMode) {
+                alert('🕺 DISCO MODE ACTIVATED! 🪩');
+                body.style.animation = 'disco 2s infinite';
+                
+                // Add disco animation
+                const style = document.createElement('style');
+                style.id = 'disco-style';
+                style.textContent = `
+                    @keyframes disco {
+                        0% { filter: hue-rotate(0deg); }
+                        100% { filter: hue-rotate(360deg); }
+                    }
+                `;
+                document.head.appendChild(style);
+            } else {
+                body.style.animation = '';
+                const discoStyle = document.getElementById('disco-style');
+                if (discoStyle) discoStyle.remove();
+            }
         }
     });
 })();
@@ -650,29 +709,6 @@ body {
 
         <img src="assets/banner.png" alt="Banner" class="banner">
 
-        <div class="ascii-art" aria-hidden="true">
-   _____ _   _  ____  ____  _______     __
-  / ____| \ | |/ __ \|  _ \|  ___\ \   / /
- | |    |  \| | |  | | |_) | |__  \ \_/ / 
- | |    | . ` | |  | |  _ <|  __|  \   /  
- | |____| |\  | |__| | |_) | |____  | |   
-  \_____|_| \_|\____/|____/|______| |_|   
-                                           
-  _____            _       _     _       
- / ____|          (_)     | |   | |      
-| |     ___  _ __  _ _ __ | |_  | | __ _ 
-| |    / _ \| '_ \| | '_ \| __| | |/ _` |
-| |___| (_) | | | | | | | | |_  | | (_| |
- \_____\___/|_| |_|_|_| |_|\__| |_|\__,_|
-                                          
-  _____                      _   _             
- / ____|                    | | (_)            
-| (___   ___  _ __ ___   ___| |_ _  ___  _ __  
- \___ \ / _ \| '_ ` _ \ / _ \ __| |/ _ \| '_ \ 
- ____) | (_) | | | | | |  __/ |_| | (_) | | | |
-|_____/ \___/|_| |_| |_|\___|\__|_|\___/|_| |_|
-                                               
-        </div>
 
         <div class="about-section">
             <span class="typing-container">
@@ -717,6 +753,9 @@ body {
 </div>
 
 <div class="command-hint">Press / to search</div>
+
+<!-- Hidden easter egg hint -->
+<div style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); font-size: 10px; color: var(--separator-color); opacity: 0.3; font-family: monospace;">↑↑↓↓←→←→BA</div>
 
 </body>
 </html>
