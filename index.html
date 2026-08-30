@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="GvanKann - Personal portfolio and links">
+<meta name="theme-color" content="#181818">
 
 <title>GvanKann</title>
 
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁</text></svg>" type="image/svg+xml">
 
 <style>
 /* CSS Reset & Base */
@@ -26,14 +26,58 @@ body {
     height: 100%;
     background: #181818;
     color: #f8f8f2;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 body {
     min-height: 100vh;
-    font-family: "Times New Roman", Georgia, serif;
+    font-family: "Courier New", "Times New Roman", Georgia, serif;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+/* Theme Variables */
+:root {
+    --bg-color: #181818;
+    --text-color: #f8f8f2;
+    --link-color: #06c6ff;
+    --link-hover: #ffe454;
+    --separator-color: #666;
+    --cursor-color: #06c6ff;
+}
+
+[data-theme="light"] {
+    --bg-color: #f8f8f2;
+    --text-color: #181818;
+    --link-color: #0066cc;
+    --link-hover: #cc5500;
+    --separator-color: #999;
+    --cursor-color: #0066cc;
+}
+
+/* Scanline Effect */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1),
+        rgba(0, 0, 0, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    opacity: 0.15;
+}
+
+[data-theme="light"] .scanlines {
+    opacity: 0.08;
 }
 
 /* Skip link for accessibility */
@@ -41,8 +85,8 @@ body {
     position: absolute;
     top: -40px;
     left: 0;
-    background: #f8f8f2;
-    color: #181818;
+    background: var(--text-color);
+    color: var(--bg-color);
     padding: 8px 16px;
     z-index: 100;
     text-decoration: none;
@@ -57,15 +101,17 @@ body {
 #main {
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     padding: 20px;
+    position: relative;
 }
 
 #main > div {
     width: 100%;
-    max-width: 600px;
+    max-width: 700px;
 }
 
 /* Banner Image */
@@ -74,7 +120,50 @@ body {
     height: auto;
     max-width: 560px;
     display: block;
-    margin: 0 auto;
+    margin: 0 auto 20px;
+}
+
+/* ASCII Art Container */
+.ascii-art {
+    font-family: monospace;
+    font-size: 10px;
+    line-height: 1.1;
+    white-space: pre;
+    color: var(--text-color);
+    margin: 20px 0;
+    overflow-x: auto;
+    text-align: center;
+    opacity: 0.8;
+}
+
+/* About Section */
+.about-section {
+    font-size: 16px;
+    margin: 20px 0;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+.about-section .tagline {
+    font-weight: bold;
+}
+
+/* Typing Animation */
+.typing-container {
+    display: inline-block;
+    text-align: left;
+}
+
+.typing-text::after {
+    content: '▋';
+    color: var(--cursor-color);
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
 }
 
 /* Timezone Display */
@@ -83,6 +172,7 @@ body {
     display: block;
     margin: 24px 0;
     font-variant-numeric: tabular-nums;
+    font-family: monospace;
 }
 
 #time {
@@ -90,7 +180,7 @@ body {
 }
 
 #tz {
-    color: #888;
+    color: var(--separator-color);
 }
 
 /* Navigation Links */
@@ -102,7 +192,7 @@ body {
 }
 
 .nav-links a {
-    color: #06c6ff;
+    color: var(--link-color);
     text-decoration: none;
     display: inline;
     transition: color 0.2s ease;
@@ -110,25 +200,140 @@ body {
 
 .nav-links a:hover,
 .nav-links a:focus {
-    color: #ffe454;
+    color: var(--link-hover);
     text-decoration: underline;
     outline: none;
 }
 
 .nav-links a:focus-visible {
-    outline: 2px solid #ffe454;
+    outline: 2px solid var(--link-hover);
     outline-offset: 2px;
 }
 
 .link-separator {
     display: inline;
     margin: 0 8px;
-    color: #666;
+    color: var(--separator-color);
     user-select: none;
 }
 
 .line-break-mobile {
     display: none;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: 1px solid var(--separator-color);
+    color: var(--text-color);
+    padding: 8px 12px;
+    font-family: monospace;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.2s ease;
+    border-radius: 0;
+}
+
+.theme-toggle:hover {
+    border-color: var(--link-color);
+    color: var(--link-color);
+}
+
+.theme-toggle:focus {
+    outline: 2px solid var(--link-color);
+    outline-offset: 2px;
+}
+
+/* Command Palette */
+.command-palette-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 100px;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.command-palette-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.command-palette {
+    background: var(--bg-color);
+    border: 1px solid var(--separator-color);
+    width: 100%;
+    max-width: 500px;
+    border-radius: 0;
+    overflow: hidden;
+}
+
+.command-input {
+    width: 100%;
+    padding: 16px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--separator-color);
+    color: var(--text-color);
+    font-family: monospace;
+    font-size: 16px;
+    outline: none;
+}
+
+.command-input::placeholder {
+    color: var(--separator-color);
+}
+
+.command-results {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.command-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.command-item:hover,
+.command-item.selected {
+    background: rgba(6, 198, 255, 0.1);
+}
+
+.command-item-name {
+    color: var(--text-color);
+    font-family: monospace;
+}
+
+.command-item-url {
+    color: var(--separator-color);
+    font-size: 12px;
+    font-family: monospace;
+}
+
+.command-hint {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    font-size: 12px;
+    color: var(--separator-color);
+    font-family: monospace;
+    opacity: 0.7;
 }
 
 /* Contact Info */
@@ -137,20 +342,20 @@ body {
     right: 16px;
     bottom: 12px;
     font-size: 14px;
-    color: #666;
+    color: var(--separator-color);
     text-align: right;
     line-height: 1.35;
 }
 
 #contact a {
-    color: #666;
+    color: var(--separator-color);
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 #contact a:hover,
 #contact a:focus {
-    color: #f8f8f2;
+    color: var(--text-color);
 }
 
 /* Responsive Design */
@@ -186,6 +391,21 @@ body {
         right: 12px;
         bottom: 10px;
     }
+
+    .ascii-art {
+        font-size: 8px;
+    }
+
+    .theme-toggle {
+        top: 12px;
+        right: 12px;
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .command-hint {
+        display: none;
+    }
 }
 
 @media (max-width: 480px) {
@@ -211,6 +431,10 @@ body {
         right: 10px;
         bottom: 10px;
     }
+
+    .ascii-art {
+        font-size: 6px;
+    }
 }
 
 /* Reduced motion preference */
@@ -219,6 +443,10 @@ body {
         transition: none !important;
         animation: none !important;
     }
+
+    .typing-text::after {
+        content: '';
+    }
 }
 </style>
 
@@ -226,6 +454,46 @@ body {
 (function() {
     'use strict';
 
+    // Theme Toggle
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        
+        if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    }
+
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        if (newTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'dark');
+        }
+    }
+
+    // Typing Animation
+    function typeText(element, text, speed = 50) {
+        let i = 0;
+        element.textContent = '';
+        
+        function type() {
+            if (i < text.length) {
+                element.textContent += text.charAt(i);
+                i++;
+                setTimeout(type, speed);
+            }
+        }
+        
+        type();
+    }
+
+    // Timezone
     const formatter = new Intl.DateTimeFormat([], {
         timeZone: "Asia/Kolkata",
         hour: "numeric",
@@ -251,9 +519,119 @@ body {
         tzEl.textContent = tzPart ? tzPart.value : "";
     }
 
-    // Initialize immediately and update every second
-    updateTime();
-    setInterval(updateTime, 1000);
+    // Command Palette
+    const commands = [
+        { name: 'github', url: 'https://github.com/GvanKann', category: 'Social' },
+        { name: 'x', url: 'https://x.com/GvannKann', category: 'Social' },
+        { name: 'twitter', url: 'https://x.com/GvannKann', category: 'Social' },
+        { name: 'substack', url: 'https://substack.com/@gvankann', category: 'Blog' },
+        { name: 'letterboxd', url: 'https://letterboxd.com/GvannKann/', category: 'Social' },
+        { name: 'backloggd', url: 'https://backloggd.com/u/GvanKann/', category: 'Gaming' },
+        { name: 'goodreads', url: 'https://www.goodreads.com/user/show/195089423-gvan', category: 'Books' },
+        { name: 'mal', url: 'https://myanimelist.net/profile/GvannnKann', category: 'Anime' },
+        { name: 'myanimelist', url: 'https://myanimelist.net/profile/GvannnKann', category: 'Anime' },
+        { name: 'email', url: 'mailto:jkanniganti@gmail.com', category: 'Contact' }
+    ];
+
+    function openCommandPalette() {
+        const overlay = document.getElementById('command-palette-overlay');
+        const input = document.getElementById('command-input');
+        
+        if (!overlay || !input) return;
+        
+        overlay.classList.add('active');
+        input.value = '';
+        input.focus();
+        renderCommands(commands);
+    }
+
+    function closeCommandPalette() {
+        const overlay = document.getElementById('command-palette-overlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+        }
+    }
+
+    function renderCommands(filteredCommands) {
+        const resultsEl = document.getElementById('command-results');
+        if (!resultsEl) return;
+
+        resultsEl.innerHTML = '';
+
+        filteredCommands.slice(0, 8).forEach(cmd => {
+            const item = document.createElement('div');
+            item.className = 'command-item';
+            item.innerHTML = `
+                <span class="command-item-name">${cmd.name}</span>
+                <span class="command-item-url">${cmd.category}</span>
+            `;
+            item.addEventListener('click', () => {
+                window.open(cmd.url, '_blank');
+                closeCommandPalette();
+            });
+            resultsEl.appendChild(item);
+        });
+    }
+
+    function filterCommands(query) {
+        const lowerQuery = query.toLowerCase();
+        return commands.filter(cmd => 
+            cmd.name.toLowerCase().includes(lowerQuery) ||
+            cmd.category.toLowerCase().includes(lowerQuery)
+        );
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        initTheme();
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Theme toggle button
+        const themeBtn = document.getElementById('theme-toggle');
+        if (themeBtn) {
+            themeBtn.addEventListener('click', toggleTheme);
+        }
+
+        // Typing animation for tagline
+        const typingElement = document.querySelector('.typing-text');
+        if (typingElement) {
+            const textToType = typingElement.getAttribute('data-text') || 'Corpo Law @ Woxsen University';
+            setTimeout(() => typeText(typingElement, textToType, 80), 500);
+        }
+
+        // Command palette keyboard shortcut
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+                e.preventDefault();
+                openCommandPalette();
+            }
+            
+            if (e.key === 'Escape') {
+                closeCommandPalette();
+            }
+        });
+
+        // Command palette input handler
+        const commandInput = document.getElementById('command-input');
+        if (commandInput) {
+            commandInput.addEventListener('input', (e) => {
+                const query = e.target.value;
+                const filtered = filterCommands(query);
+                renderCommands(filtered);
+            });
+        }
+
+        // Close command palette on overlay click
+        const overlay = document.getElementById('command-palette-overlay');
+        if (overlay) {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    closeCommandPalette();
+                }
+            });
+        }
+    });
 })();
 </script>
 
@@ -261,12 +639,46 @@ body {
 
 <body>
 
+<div class="scanlines"></div>
+
 <a href="#main-content" class="skip-link">Skip to main content</a>
+
+<button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">◐</button>
 
 <main id="main">
     <div id="main-content">
 
-        <img src="assets/banner.png" alt="University of Utah banner" class="banner">
+        <img src="assets/banner.png" alt="Banner" class="banner">
+
+        <div class="ascii-art" aria-hidden="true">
+   _____ _   _  ____  ____  _______     __
+  / ____| \ | |/ __ \|  _ \|  ___\ \   / /
+ | |    |  \| | |  | | |_) | |__  \ \_/ / 
+ | |    | . ` | |  | |  _ <|  __|  \   /  
+ | |____| |\  | |__| | |_) | |____  | |   
+  \_____|_| \_|\____/|____/|______| |_|   
+                                           
+  _____            _       _     _       
+ / ____|          (_)     | |   | |      
+| |     ___  _ __  _ _ __ | |_  | | __ _ 
+| |    / _ \| '_ \| | '_ \| __| | |/ _` |
+| |___| (_) | | | | | | | | |_  | | (_| |
+ \_____\___/|_| |_|_|_| |_|\__| |_|\__,_|
+                                          
+  _____                      _   _             
+ / ____|                    | | (_)            
+| (___   ___  _ __ ___   ___| |_ _  ___  _ __  
+ \___ \ / _ \| '_ ` _ \ / _ \ __| |/ _ \| '_ \ 
+ ____) | (_) | | | | | |  __/ |_| | (_) | | | |
+|_____/ \___/|_| |_| |_|\___|\__|_|\___/|_| |_|
+                                               
+        </div>
+
+        <div class="about-section">
+            <span class="typing-container">
+                <span class="typing-text" data-text="Corpo Law @ Woxsen University"></span>
+            </span>
+        </div>
 
         <span id="timezone">
             <span id="time"></span>
@@ -296,6 +708,15 @@ body {
 <footer id="contact">
     <a href="mailto:jkanniganti@gmail.com">jkanniganti[at]gmail.com</a>
 </footer>
+
+<div id="command-palette-overlay" class="command-palette-overlay">
+    <div class="command-palette">
+        <input type="text" id="command-input" class="command-input" placeholder="Type a command... (github, x, substack, etc)" autocomplete="off">
+        <div id="command-results" class="command-results"></div>
+    </div>
+</div>
+
+<div class="command-hint">Press / to search</div>
 
 </body>
 </html>
