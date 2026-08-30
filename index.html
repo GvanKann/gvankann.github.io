@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="GvanKann - Personal portfolio and links">
 
 <title>GvanKann</title>
 
@@ -11,21 +12,48 @@
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
 <style>
+/* CSS Reset & Base */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 html,
 body {
     margin: 0;
     width: 100%;
     height: 100%;
-    background: #181818; /* elegant, aesthetic black */
-    color: #f8f8f2;      /* optional: makes text readable on black bg */
-    box-sizing: border-box;
+    background: #181818;
+    color: #f8f8f2;
 }
 
 body {
     min-height: 100vh;
-    font-family: "Times New Roman", serif;
+    font-family: "Times New Roman", Georgia, serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
+/* Skip link for accessibility */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #f8f8f2;
+    color: #181818;
+    padding: 8px 16px;
+    z-index: 100;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Main Content */
 #main {
     min-height: 100vh;
     display: flex;
@@ -37,9 +65,11 @@ body {
 
 #main > div {
     width: 100%;
+    max-width: 600px;
 }
 
-#main img {
+/* Banner Image */
+.banner {
     width: 100%;
     height: auto;
     max-width: 560px;
@@ -47,12 +77,61 @@ body {
     margin: 0 auto;
 }
 
+/* Timezone Display */
 #timezone {
     font-size: 18px;
     display: block;
-    margin: 20px 0;
+    margin: 24px 0;
+    font-variant-numeric: tabular-nums;
 }
 
+#time {
+    margin-right: 8px;
+}
+
+#tz {
+    color: #888;
+}
+
+/* Navigation Links */
+.nav-links {
+    white-space: nowrap;
+    overflow-x: auto;
+    display: inline-block;
+    padding: 8px 0;
+}
+
+.nav-links a {
+    color: #06c6ff;
+    text-decoration: none;
+    display: inline;
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a:focus {
+    color: #ffe454;
+    text-decoration: underline;
+    outline: none;
+}
+
+.nav-links a:focus-visible {
+    outline: 2px solid #ffe454;
+    outline-offset: 2px;
+}
+
+.link-separator {
+    display: inline;
+    margin: 0 8px;
+    color: #666;
+    user-select: none;
+}
+
+.line-break-mobile {
+    display: none;
+}
+
+/* Contact Info */
 #contact {
     position: fixed;
     right: 16px;
@@ -63,33 +142,18 @@ body {
     line-height: 1.35;
 }
 
-.nav-links {
-    white-space: nowrap;
-    overflow-x: auto;
-    display: inline-block;
-}
-
-a.link-bright {
-    color: #06c6ff; /* bright cyan, readable on black */
+#contact a {
+    color: #666;
     text-decoration: none;
-    display: inline;
+    transition: color 0.2s ease;
 }
 
-a.link-bright:hover, a.link-bright:focus {
-    color: #ffe454; /* yellow highlight on hover */
-    text-decoration: underline;
-}
-
-.link-separator {
-    display: inline;
-    margin: 0 8px;
+#contact a:hover,
+#contact a:focus {
     color: #f8f8f2;
 }
 
-.line-break-mobile {
-    display: none;
-}
-
+/* Responsive Design */
 @media (max-width: 640px) {
     #main {
         padding: 15px;
@@ -97,9 +161,15 @@ a.link-bright:hover, a.link-bright:focus {
 
     #timezone {
         font-size: 16px;
+        margin: 20px 0;
     }
 
-    a.link-bright {
+    .nav-links {
+        white-space: normal;
+        line-height: 1.8;
+    }
+
+    .nav-links a {
         font-size: 14px;
     }
 
@@ -107,24 +177,14 @@ a.link-bright:hover, a.link-bright:focus {
         margin: 0 6px;
     }
 
+    .line-break-mobile {
+        display: none;
+    }
+
     #contact {
         font-size: 12px;
         right: 12px;
         bottom: 10px;
-        text-align: right;
-    }
-
-    #contact .address {
-        margin-top: 4px;
-    }
-
-    .nav-links {
-        white-space: normal;
-    }
-
-    .line-break-mobile {
-        display: block;
-        width: 100%;
     }
 }
 
@@ -135,9 +195,10 @@ a.link-bright:hover, a.link-bright:focus {
 
     #timezone {
         font-size: 14px;
+        margin: 16px 0;
     }
 
-    a.link-bright {
+    .nav-links a {
         font-size: 13px;
     }
 
@@ -146,83 +207,95 @@ a.link-bright:hover, a.link-bright:focus {
     }
 
     #contact {
-        font-size: 12px;
+        font-size: 11px;
         right: 10px;
         bottom: 10px;
-        text-align: right;
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
     }
 }
 </style>
 
 <script>
-const formatter = new Intl.DateTimeFormat([], {
-    timeZone: "Asia/Kolkata",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    timeZoneName: "short"
-});
+(function() {
+    'use strict';
 
-function updateTime() {
-    const parts = formatter.formatToParts(new Date());
+    const formatter = new Intl.DateTimeFormat([], {
+        timeZone: "Asia/Kolkata",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        timeZoneName: "short"
+    });
 
-    document.getElementById("time").textContent =
-        parts
+    function updateTime() {
+        const timeEl = document.getElementById("time");
+        const tzEl = document.getElementById("tz");
+
+        if (!timeEl || !tzEl) return;
+
+        const parts = formatter.formatToParts(new Date());
+
+        timeEl.textContent = parts
             .filter(part => part.type !== "timeZoneName")
             .map(part => part.value)
             .join("");
 
-    document.getElementById("tz").textContent =
-        parts.find(part => part.type === "timeZoneName").value;
-}
+        const tzPart = parts.find(part => part.type === "timeZoneName");
+        tzEl.textContent = tzPart ? tzPart.value : "";
+    }
 
-window.onload = () => {
+    // Initialize immediately and update every second
     updateTime();
     setInterval(updateTime, 1000);
-};
+})();
 </script>
 
 </head>
 
 <body>
 
-<div id="main">
-    <div>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
-        <font size="12"><i><b></b></i></font>
+<main id="main">
+    <div id="main-content">
 
-        <br><br>
-
-        <img src="assets/banner.png" alt="u of u">
-
-        <br><br>
+        <img src="assets/banner.png" alt="University of Utah banner" class="banner">
 
         <span id="timezone">
+            <span id="time"></span>
+            <span id="tz"></span>
         </span>
 
-        <div class="nav-links">
-            <a href="https://github.com/GvanKann" class="link-bright">Github</a>
-            <span class="link-separator">//</span>
-            <a href="https://x.com/GvannKann" class="link-bright">X</a>
-            <span class="link-separator">//</span>
-            <a href="https://substack.com/@gvankann" class="link-bright">Substack</a>
-            <span class="link-separator">//</span>
-            <a href="https://letterboxd.com/GvannKann/" class="link-bright">letterboxd</a>
+        <nav class="nav-links" aria-label="Social media links">
+            <a href="https://github.com/GvanKann" class="link-bright" rel="noopener noreferrer" target="_blank">Github</a>
+            <span class="link-separator" aria-hidden="true">//</span>
+            <a href="https://x.com/GvannKann" class="link-bright" rel="noopener noreferrer" target="_blank">X</a>
+            <span class="link-separator" aria-hidden="true">//</span>
+            <a href="https://substack.com/@gvankann" class="link-bright" rel="noopener noreferrer" target="_blank">Substack</a>
+            <span class="link-separator" aria-hidden="true">//</span>
+            <a href="https://letterboxd.com/GvannKann/" class="link-bright" rel="noopener noreferrer" target="_blank">letterboxd</a>
             <span class="line-break-mobile"></span>
-            <span class="link-separator">//</span>
-            <a href="https://backloggd.com/u/GvanKann/" class="link-bright">backloggd</a>
-            <span class="link-separator">//</span>
-            <a href="https://www.goodreads.com/user/show/195089423-gvan" class="link-bright">goodreads</a>
-            <span class="link-separator">//</span>
-            <a href="https://myanimelist.net/profile/GvannnKann" class="link-bright">MAL</a>
-        </div>
+            <span class="link-separator" aria-hidden="true">//</span>
+            <a href="https://backloggd.com/u/GvanKann/" class="link-bright" rel="noopener noreferrer" target="_blank">backloggd</a>
+            <span class="link-separator" aria-hidden="true">//</span>
+            <a href="https://www.goodreads.com/user/show/195089423-gvan" class="link-bright" rel="noopener noreferrer" target="_blank">goodreads</a>
+            <span class="link-separator" aria-hidden="true">//</span>
+            <a href="https://myanimelist.net/profile/GvannnKann" class="link-bright" rel="noopener noreferrer" target="_blank">MAL</a>
+        </nav>
 
     </div>
-</div>
+</main>
 
-<div id="contact">
-    <div>jkanniganti[at]gmail.com</div>
-</div>
+<footer id="contact">
+    <a href="mailto:jkanniganti@gmail.com">jkanniganti[at]gmail.com</a>
+</footer>
 
 </body>
 </html>
