@@ -31,7 +31,7 @@ body {
 
 body {
     min-height: 100vh;
-    font-family: "Courier New", "Times New Roman", Georgia, serif;
+    font-family: "Courier New", Courier, monospace;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -130,24 +130,6 @@ body {
     margin: 20px 0;
     color: var(--text-color);
     opacity: 0.9;
-}
-
-/* Typing Animation */
-.typing-container {
-    display: inline-block;
-    text-align: left;
-}
-
-.typing-text::after {
-    content: '▋';
-    color: var(--cursor-color);
-    animation: blink 1s step-end infinite;
-    margin-left: 2px;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
 }
 
 /* Timezone Display */
@@ -424,9 +406,8 @@ body {
         transition: none !important;
         animation: none !important;
     }
-
-    .typing-text::after {
-        content: '';
+}
+</style>
 
 <script>
 (function() {
@@ -453,22 +434,6 @@ body {
             document.documentElement.removeAttribute('data-theme');
             localStorage.setItem('theme', 'dark');
         }
-    }
-
-    // Typing Animation
-    function typeText(element, text, speed = 50) {
-        let i = 0;
-        element.textContent = '';
-        
-        function type() {
-            if (i < text.length) {
-                element.textContent += text.charAt(i);
-                i++;
-                setTimeout(type, speed);
-            }
-        }
-        
-        type();
     }
 
     // Timezone
@@ -581,13 +546,6 @@ body {
             themeBtn.addEventListener('click', toggleTheme);
         }
 
-        // Typing animation for tagline
-        const typingElement = document.querySelector('.typing-text');
-        if (typingElement) {
-            const textToType = typingElement.getAttribute('data-text') || 'Corpo Law @ Woxsen University';
-            setTimeout(() => typeText(typingElement, textToType, 80), 500);
-        }
-
         // Command palette keyboard shortcut
         document.addEventListener('keydown', (e) => {
             if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey) {
@@ -689,9 +647,7 @@ body {
 
 
         <div class="about-section">
-            <span class="typing-container">
-                <span class="typing-text" data-text="Corpo Law @ Woxsen University"></span>
-            </span>
+            Corpo Law @ Woxsen University
         </div>
 
         <span id="timezone">
@@ -720,7 +676,7 @@ body {
 </main>
 
 <footer id="contact">
-    <a href="mailto:jkanniganti@gmail.com">jkanniganti[at]gmail.com</a>
+    jkanniganti[at]gmail.com
 </footer>
 
 <div id="command-palette-overlay" class="command-palette-overlay">
